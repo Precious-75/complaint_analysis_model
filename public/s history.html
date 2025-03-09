@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Complaints - EmotionVoice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6c757d;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info span {
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        .dashboard {
+            display: flex;
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 20px;
+            margin-right: 20px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar-nav a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .sidebar-nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .sidebar-nav i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-nav a.active {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-header h2 {
+            color: var(--primary-color);
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .complaints-list {
+            margin-bottom: 30px;
+        }
+
+        .complaint-card {
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .complaint-header {
+            background-color: var(--light-color);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .complaint-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .complaint-id {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .complaint-meta {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background-color: #fafafa;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .meta-item i {
+            margin-right: 6px;
+            font-size: 1rem;
+        }
+
+        .complaint-body {
+            padding: 15px;
+        }
+
+        .complaint-content {
+            margin-bottom: 15px;
+        }
+
+        .complaint-content p {
+            margin-bottom: 10px;
+        }
+
+        .complaint-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status.resolved {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .status.in-progress {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+
+        .status.rejected {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger-outline {
+            background-color: transparent;
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .btn-danger-outline:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .pagination li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 600;
+            transition: var(--transition);
+            border: 1px solid #e1e1e1;
+        }
+
+        .pagination li a:hover,
+        .pagination li.active a {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination li.disabled a {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .attachments {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #e1e1e1;
+        }
+
+        .attachments h4 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+        }
+
+        .attachment-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .attachment-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 10px;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .attachment-item i {
+            margin-right: 5px;
+            font-size: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--secondary-color);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .new-complaint-btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: var(--transition);
+        }
+
+        .new-complaint-btn:hover {
+            background-color: #ff4c4c;
+        }
+
+        .response-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e1e1e1;
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .response-header img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .response-meta {
+            font-size: 0.9rem;
+        }
+
+        .response-meta .responder {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .response-meta .response-time {
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .complaint-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .complaint-actions {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="home.html" class="logo">
+                    <i class="fas fa-comment-dots logo-icon"></i>
+                    Emotion<span>Voice</span>
+                </a>
+                <div class="user-info">
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard container">
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="s dashboard.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-user-cog"></i>Profile Settings</a></li>
+                <li><a href="s complaint.html"><i class="fas fa-plus-circle"></i>New Complaint</a></li>
+                <li><a href="s notifications.html" class="active"><i class="fas fa-list"></i>Notification</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="history-header">
+                <h2>My Complaints</h2>
+                <div class="search-filter">
+                    <input type="text" class="search-input" placeholder="Search complaints...">
+                    <select class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="complaints-list">
+                <!-- Complaint 1 -->
+                <div class="complaint-card">
+                    <div class="complaint-header">
+                        <div class="complaint-title">Grading Discrepancy in CS301 Final Exam</div>
+                        <div class="complaint-id">#COMP-2024-001</div>
+                    </div>
+                    <div class="complaint-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt"></i> Submitted: February 15, 2024
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-tag"></i> Academic
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i> Last Updated: February 18, 2024
+                        </div>
+                    </div>
+                    <div class="complaint-body">
+                        <div class="complaint-content">
+                            <p>I would like to request a review of my final exam grade for CS301. I believe there was an error in the grading of question 4, where I provided a complete solution but only received partial credit. I have attached a copy of my exam paper with annotations to highlight the issue.</p>
+                        </div>
+                        <div class="attachments">
+                            <h4>Attachments (2)</h4>
+                            <div class="attachment-list">
+                                <div class="attachment-item">
+                                    <i class="fas fa-file-pdf"></i> exam_paper.pdf
+                                </div>
+                                <div class="attachment-item">
+                                    <i class="fas fa-file-image"></i> solution_comparison.jpg
+                                </div>
+                            </div>
+                        </div>
+                        <div class="response-section">
+                            <div class="response-header">
+                                <img src="/api/placeholder/40/40" alt="Staff Avatar">
+                                <div class="response-meta">
+                                    <div class="responder">Dr. Johnson, Academic Coordinator</div>
+                                    <div class="response-time">Responded: February 18, 2024</div>
+                                </div>
+                            </div>
+                            <p>Thank you for bringing this to our attention. We have reviewed your exam paper and agree that there was an error in grading question 4. Your grade has been updated to reflect the correct score. Please allow 24-48 hours for the change to appear in the system.</p>
+                        </div>
+                        <div class="complaint-actions">
+                            <div class="status resolved">Resolved</div>
+                            <div class="action-buttons">
+                                <button class="btn btn-outline">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutBtn = document.querySelector('.logout-btn');
+            logoutBtn.addEventListener('click', function() {
+                alert('Logged out successfully!');
+                window.location.href = 'home.html';
+            });
+
+            // View Details button functionality
+            const viewDetailsButtons = document.querySelectorAll('.btn-outline');
+            viewDetailsButtons.forEach(button => {
+                if (button.textContent.trim() === 'View Details') {
+                    button.addEventListener('click', function() {
+                        const complaintId = this.closest('.complaint-card').querySelector('.complaint-id').textContent;
+                        alert(`Viewing details for ${complaintId}`);
+                        window.location.href = 's view.html';
+                  
+                    });
+                }
+            });
+
+            // Cancel Complaint button functionality
+            const cancelButtons = document.querySelectorAll('.btn-danger-outline');
+            cancelButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const complaintId = this.closest('.complaint-card').querySelector('.complaint-id').textContent;
+                    if (confirm(`Are you sure you want to cancel complaint ${complaintId}?`)) {
+                        alert('Complaint canceled successfully!');
+                    }
+                });
+            });
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const complaintCards = document.querySelectorAll('.complaint-card');
+                
+                complaintCards.forEach(card => {
+                    const title = card.querySelector('.complaint-title').textContent.toLowerCase();
+                    const content = card.querySelector('.complaint-content').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            
+                });
+           
+    </script>
+</body>
+</html>

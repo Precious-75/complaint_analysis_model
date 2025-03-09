@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Complaint - EmotionVoice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6c757d;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info span {
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        .complaint-view {
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+
+        .form-container {
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .status-banner {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-banner.pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .status-banner.processing {
+            background-color: rgba(23, 162, 184, 0.2);
+            border-left: 4px solid var(--info-color);
+        }
+
+        .status-banner.resolved {
+            background-color: rgba(40, 167, 69, 0.2);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .status-banner.rejected {
+            background-color: rgba(220, 53, 69, 0.2);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .status-text {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-text i {
+            font-size: 1.5rem;
+        }
+
+        .status-text.pending {
+            color: #856404;
+        }
+
+        .status-text.processing {
+            color: var(--info-color);
+        }
+
+        .status-text.resolved {
+            color: var(--success-color);
+        }
+
+        .status-text.rejected {
+            color: var(--danger-color);
+        }
+
+        .status-date {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .form-title {
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .complaint-id {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .label-info {
+            font-weight: normal;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: var(--light-color);
+            cursor: not-allowed;
+            color: var(--dark-color);
+        }
+
+        .form-control:read-only {
+            color: var(--dark-color);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23343a40' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: none;
+        }
+
+        .file-list {
+            margin-top: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: var(--light-color);
+            margin-bottom: 8px;
+        }
+
+        .file-icon {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .file-name {
+            flex-grow: 1;
+        }
+
+        .file-size {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        .file-download {
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-download:hover {
+            color: var(--dark-color);
+        }
+
+        .response-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .response-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .response-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--light-color);
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .response-from {
+            font-weight: 600;
+        }
+
+        .response-date {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        .response-content {
+            margin-bottom: 10px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a5a84;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-outlined {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outlined:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .status-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .form-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .form-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-comment-dots logo-icon"></i>
+                    Emotion<span>Voice</span>
+                </a>
+                <div class="user-info">
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="complaint-view container">
+        <div class="form-container">
+            <!-- Status Banner for Processing Status -->
+            <div class="status-banner processing">
+                <div class="status-text processing">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Your complaint is currently being processed by the Student Affairs Department
+                </div>
+                <div class="status-date">Updated: March 6, 2025</div>
+            </div>
+
+            <h2 class="form-title">
+                View Complaint
+                <span class="complaint-id">Complaint ID: STC-2025-03056</span>
+            </h2>
+            
+            <form id="viewComplaintForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" class="form-control" value="John Doe" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="matricNumber">Matric Number</label>
+                    <input type="text" id="matricNumber" name="matricNumber" class="form-control" value="STD/2021/0042" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="schoolEmail">School Email</label>
+                    <input type="email" id="schoolEmail" name="schoolEmail" class="form-control" value="john.doe@university.edu" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="complaintTitle">
+                        Title of Complaint
+                        <span class="label-info">Submitted: Mar 05, 2025</span>
+                    </label>
+                    <input type="text" id="complaintTitle" name="complaintTitle" class="form-control" value="Library Access Issues" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="complaintCategory">Category</label>
+                    <input type="text" id="complaintCategory" name="complaintCategory" class="form-control" value="Academic" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="complaintDate">Date of Incident</label>
+                    <input type="text" id="complaintDate" name="complaintDate" class="form-control" value="March 3, 2025" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="complaintMessage">Complaint Message</label>
+                    <textarea id="complaintMessage" name="complaintMessage" class="form-control" readonly>I've been having issues accessing the online library resources for the past week. Despite entering my correct credentials, the system shows an error message stating "Access Denied: Invalid Permissions." This is affecting my research for the upcoming final project. I've already reached out to the IT helpdesk via email twice but haven't received any response yet. Please help resolve this issue as soon as possible as the project deadline is approaching.</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Supporting Documents</label>
+                    <div class="file-list">
+                        <div class="file-item">
+                            <i class="fas fa-file-image file-icon"></i>
+                            <div class="file-name">error_screenshot.jpg</div>
+                            <div class="file-size">1.2 MB</div>
+                            <i class="fas fa-download file-download"></i>
+                        </div>
+                        <div class="file-item">
+                            <i class="fas fa-file-pdf file-icon"></i>
+                            <div class="file-name">email_correspondence.pdf</div>
+                            <div class="file-size">0.8 MB</div>
+                            <i class="fas fa-download file-download"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Responses (2)</h3>
+                    
+                    <div class="response-item">
+                        <div class="response-header">
+                            <div class="response-from">IT Department</div>
+                            <div class="response-date">Mar 06, 2025, 10:15 AM</div>
+                        </div>
+                        <div class="response-content">
+                            Thank you for reporting this issue. We have identified a permission configuration problem affecting some student accounts. Our team is working on fixing the issue, and we expect it to be resolved within 24 hours. We apologize for the inconvenience.
+                        </div>
+                    </div>
+                    
+                    <div class="response-item">
+                        <div class="response-header">
+                            <div class="response-from">Student Affairs</div>
+                            <div class="response-date">Mar 05, 2025, 02:30 PM</div>
+                        </div>
+                        <div class="response-content">
+                            We have received your complaint and have forwarded it to the IT Department for investigation. In the meantime, you can visit the physical library to access the resources you need. Please let us know if you require any additional assistance.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" id="backBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </button>
+                    <button type="button" id="respondBtn" class="btn btn-primary">
+                        <i class="fas fa-reply"></i> Send Response
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logout button functionality
+            const logoutBtn = document.querySelector('.logout-btn');
+            logoutBtn.addEventListener('click', function() {
+                alert('Logged out successfully!');
+                window.location.href = 'index.html';
+            });
+
+            // Back button functionality
+            const backBtn = document.getElementById('backBtn');
+            backBtn.addEventListener('click', function() {
+                window.location.href = 's dashboard.html';
+            });
+
+            // Respond button functionality
+            const respondBtn = document.getElementById('respondBtn');
+            respondBtn.addEventListener('click', function() {
+                alert('Response feature would open a response dialog in a real application');
+            });
+
+            // File download functionality
+            const downloadBtns = document.querySelectorAll('.file-download');
+            downloadBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const fileName = this.previousElementSibling.previousElementSibling.textContent;
+                    alert(`Downloading file: ${fileName}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

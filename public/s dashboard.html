@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - EmotionVoice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6c757d;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info span {
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        .dashboard {
+            display: flex;
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 20px;
+            margin-right: 20px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar-nav a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .sidebar-nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .sidebar-nav i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .overview {
+            margin-bottom: 30px;
+        }
+
+        .overview h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-box {
+            flex: 1;
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .stat-box p {
+            color: var(--secondary-color);
+        }
+
+        .recent-complaints h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        table th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .status.resolved {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .status.in-progress {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+
+        .quick-complaint-btn {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .quick-complaint-btn .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quick-complaint-btn .btn:hover {
+            background-color: #ff4c4c;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-comment-dots logo-icon"></i>
+                    Emotion<span>Voice</span>
+                </a>
+                <div class="user-info">
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard container">
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="complaint"><i class="fas fa-plus-circle"></i>New Complaint</a></li>
+                <li><a href="history "><i class="fas fa-list"></i>My Complaints</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="overview">
+                <h2>Overview</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <h3>5</h3>
+                        <p>Total Complaints</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>2</h3>
+                        <p>Pending</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>3</h3>
+                        <p>Resolved</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-complaints">
+                <h2>Recent Complaints</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Complaint ID</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="quick-complaint-btn">
+                <button class="btn"><i class="fas fa-plus"></i> Submit a Quick Complaint</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const newComplaintLink = document.querySelector('.sidebar-nav a[href="complaint"]');
+    const historyLink = document.querySelector('.sidebar-nav a[href="history "]'); 
+    if (newComplaintLink) {
+        newComplaintLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 's complaint.html';
+        });
+    }
+    
+    if (historyLink) {
+        historyLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 's history.html';
+        });
+    }
+    
+    const quickComplaintBtn = document.querySelector('.quick-complaint-btn .btn');
+    if (quickComplaintBtn) {
+        quickComplaintBtn.addEventListener('click', function() {
+            window.location.href = 's complaint.html';
+        });
+    }
+});
+    </script>
+</body>
+</html>

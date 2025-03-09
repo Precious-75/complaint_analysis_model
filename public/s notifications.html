@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - EmotionVoice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6c757d;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info span {
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
+        .notification-center {
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+
+        .notification-container {
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .notification-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .notification-count {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .notification-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .notification-item {
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            background-color: var(--light-color);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .notification-item.unread {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        .notification-item.success {
+            border-left-color: var(--success-color);
+        }
+
+        .notification-item.warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .notification-item.danger {
+            border-left-color: var(--danger-color);
+        }
+
+        .notification-item.info {
+            border-left-color: var(--info-color);
+        }
+
+        .notification-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background-color: var(--warning-color);
+            color: #856404;
+        }
+
+        .status-processing {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        .status-resolved {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .status-rejected {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .notification-header-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .notification-title-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .notification-date {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        .notification-content {
+            margin-bottom: 10px;
+        }
+
+        .notification-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .notification-category {
+            background-color: rgba(108, 117, 125, 0.2);
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: var(--secondary-color);
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            color: var(--dark-color);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 5px;
+        }
+
+        .page-btn {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            background-color: white;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:hover:not(.active) {
+            background-color: var(--light-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .empty-text {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a5a84;
+        }
+
+        @media (max-width: 768px) {
+            .notification-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .notification-filters {
+                justify-content: space-between;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+
+            .notification-header-row {
+                flex-direction: column;
+            }
+
+            .notification-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="home.html" class="logo">
+                    <i class="fas fa-comment-dots logo-icon"></i>
+                    Emotion<span>Voice</span>
+                </a>
+                <div class="user-info">
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="notification-center container">
+        <div class="notification-container">
+            <div class="notification-header">
+                <h2 class="notification-title">Notification Center</h2>
+                <span class="notification-count">1 Notifications</span>
+            </div>
+
+            <div class="notification-filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Pending</button>
+                <button class="filter-btn">Processing</button>
+                <button class="filter-btn">Resolved</button>
+            </div>
+
+            <div class="notification-list">
+                <!-- Notification Item 1 -->
+                <div class="notification-item unread">
+                    <span class="notification-status status-processing">Processing</span>
+                    <div class="notification-header-row">
+                        <div class="notification-title-text">Your complaint is being reviewed</div>
+                        <div class="notification-date">Today, 09:45 AM</div>
+                    </div>
+                    <div class="notification-content">
+                        Your complaint regarding "Library Access Issues" has been assigned to the Student Affairs Department and is currently under review.
+                    </div>
+                    <div class="notification-footer">
+                        <span class="notification-category">Academic</span>
+                        <div class="notification-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-check-double"></i> Mark as Read
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logout button functionality
+            const logoutBtn = document.querySelector('.logout-btn');
+            logoutBtn.addEventListener('click', function() {
+                alert('Logged out successfully!');
+                window.location.href = 'index.html';
+            });
+
+            // Filter buttons functionality
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In a real app, you would filter the notifications here
+                    const filter = this.textContent.toLowerCase();
+                    filterNotifications(filter);
+                });
+            });
+
+            // Mark as read functionality
+            const markReadBtns = document.querySelectorAll('.action-btn:nth-child(2)');
+            markReadBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const notificationItem = this.closest('.notification-item');
+                    notificationItem.classList.remove('unread');
+                    
+                    // Update notification count
+                    updateNotificationCount();
+                });
+            });
+
+            // View details functionality
+            const viewDetailsBtns = document.querySelectorAll('.action-btn:nth-child(1)');
+            viewDetailsBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Viewing details of this notification...');
+                    // In a real app, you would redirect to a details page or show a modal
+                });
+            });
+
+            // Pagination functionality
+            const pageBtns = document.querySelectorAll('.page-btn');
+            pageBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!this.classList.contains('active') && this.textContent !== '') {
+                        pageBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // In a real app, you would load different notifications here
+                        alert('Loading page ' + this.textContent);
+                    }
+                });
+            });
+
+            // Function to filter notifications (demo only)
+            function filterNotifications(filter) {
+                const notifications = document.querySelectorAll('.notification-item');
+                
+                if (filter === 'all') {
+                    notifications.forEach(item => item.style.display = 'block');
+                    return;
+                }
+                
+                notifications.forEach(item => {
+                    if (filter === 'unread' && item.classList.contains('unread')) {
+                        item.style.display = 'block';
+                    } else if (item.querySelector('.notification-status').textContent.toLowerCase() === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            // Function to update notification count
+            function updateNotificationCount() {
+                const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+                const notificationCount = document.querySelector('.notification-count');
+                notificationCount.textContent = `${unreadCount} Notification${unreadCount !== 1 ? 's' : ''}`;
+            }
+        });
+    </script>
+</body>
+</html>
