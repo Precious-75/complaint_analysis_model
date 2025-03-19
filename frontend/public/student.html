@@ -278,14 +278,6 @@
                         <div class="tab" data-tab="signup">Sign Up</div>
                     </div>
                     
-                    <?php if(isset($error)): ?>
-                        <div class="alert alert-danger"><?php echo $error; ?></div>
-                    <?php endif; ?>
-                    
-                    <?php if(isset($success)): ?>
-                        <div class="alert alert-success"><?php echo $success; ?></div>
-                    <?php endif; ?>
-                    
                     <div class="form-container active" id="login">
                         <form action="s dashboard.html" method="post">
                             <div class="form-group">
@@ -363,22 +355,19 @@
                 tab.addEventListener('click', function() {
                     // Remove active class from all tabs
                     tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
                     this.classList.add('active');
-
-                     // New addition: Redirect based on role
-                    const role = this.getAttribute('data-role');
-                    if (role === 'student') {
-                    window.location.href = 's dashboard.html';
                     
-                    // Show the corresponding form
+                    // Get the tab id
                     const tabId = this.getAttribute('data-tab');
-                    formContainers.forEach(form => {
-                        form.classList.remove('active');
-                        if (form.id === tabId) {
-                            form.classList.add('active');
-                        }
+                    
+                    // Hide all form containers
+                    formContainers.forEach(container => {
+                        container.classList.remove('active');
                     });
-                }
+                    
+                    // Show the relevant form container
+                    document.getElementById(tabId).classList.add('active');
                 });
             });
         });
