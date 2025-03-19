@@ -122,40 +122,12 @@
             padding: 40px;
         }
         
-        .tabs {
-            display: flex;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #e1e1e1;
-        }
-        
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--secondary-color);
-            position: relative;
-        }
-        
-        .tab.active {
+        .form-heading {
+            font-size: 1.8rem;
             color: var(--primary-color);
-        }
-        
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: var(--primary-color);
-        }
-        
-        .form-container {
-            display: none;
-        }
-        
-        .form-container.active {
-            display: block;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e1e1e1;
         }
         
         .form-group {
@@ -200,19 +172,24 @@
             background-color: #3d5d8a;
         }
         
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        
+        .link {
             color: var(--secondary-color);
             text-decoration: none;
             transition: var(--transition);
+            font-size: 0.9rem;
         }
         
-        .back-link:hover {
+        .link:hover {
             color: var(--primary-color);
         }
         
-        .back-link i {
+        .link i {
             margin-right: 5px;
         }
         
@@ -273,104 +250,35 @@
                     <p>Share your concerns and get them resolved quickly with our emotional intelligence platform.</p>
                 </div>
                 <div class="auth-forms">
-                    <div class="tabs">
-                        <div class="tab active" data-tab="login">Login</div>
-                        <div class="tab" data-tab="signup">Sign Up</div>
-                    </div>
+                    <h2 class="form-heading">Login</h2>
                     
-                    <div class="form-container active" id="login">
-                        <form action="s dashboard.html" method="post">
-                            <div class="form-group">
-                                <label for="login-email">Email</label>
-                                <input type="email" id="login-email" name="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="login-password">Password</label>
-                                <input type="password" id="login-password" name="password" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" name="login" class="btn">Login</button>
-                            </div>
-                            <a href="#" class="back-link">Forgot password?</a>
-                        </form>
-                    </div>
+                    <form action="s dashboard.html" method="post">
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="login" class="btn">Login</button>
+                        </div>
+                        
+                        <div class="links">
+                            <a href="#" class="link">Forgot password?</a>
+                            <a href="student sign up" class="link">Don't have an account? <strong>Sign Up</strong></a>
+                        </div>
+                    </form>
                     
-                    <div class="form-container" id="signup">
-                        <form action="s dashboard.html" method="post">
-                            <div class="form-group">
-                                <label for="signup-name">Full Name</label>
-                                <input type="text" id="signup-name" name="name" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-email">Email</label>
-                                <input type="email" id="signup-email" name="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-student-id">Student ID</label>
-                                <input type="text" id="signup-student-id" name="student_id" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-program">Program/Course</label>
-                                <input type="text" id="signup-program" name="program" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-year">Year of Study</label>
-                                <select id="signup-year" name="year" class="form-control" required>
-                                    <option value="">Select Year</option>
-                                    <option value="1">100L</option>
-                                    <option value="2">200L</option>
-                                    <option value="3">300L</option>
-                                    <option value="4">400L</option>
-                                    <option value="5">500L or Above</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-password">Password</label>
-                                <input type="password" id="signup-password" name="password" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-confirm-password">Confirm Password</label>
-                                <input type="password" id="signup-confirm-password" name="confirm_password" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" name="signup" class="btn">Sign Up</button>
-                            </div>
-                        </form>
+                    <div class="links" style="margin-top: 2rem;">
+                        <a href="home.html" class="link">
+                            <i class="fas fa-arrow-left"></i> Back to Home
+                        </a>
                     </div>
-                    
-                    <a href="home.html" class="back-link">
-                        <i class="fas fa-arrow-left"></i> Back to Home
-                    </a>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.tab');
-            const formContainers = document.querySelectorAll('.form-container');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Get the tab id
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Hide all form containers
-                    formContainers.forEach(container => {
-                        container.classList.remove('active');
-                    });
-                    
-                    // Show the relevant form container
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-        });
-    </script>
 </body>
 </html>
