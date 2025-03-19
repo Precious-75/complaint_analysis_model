@@ -75,11 +75,35 @@
         .user-info {
             display: flex;
             align-items: center;
+            gap: 15px;
         }
 
-        .user-info span {
-            margin-right: 10px;
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
             font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
         }
 
         .logout-btn {
@@ -249,6 +273,15 @@
                 width: 100%;
                 margin-bottom: 20px;
             }
+
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .user-details {
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -260,7 +293,6 @@
                     <i class="fas fa-comment-dots logo-icon"></i>
                     BUCMS
                 </a>
-                <div class="user-info">
                     <button class="logout-btn">Logout</button>
                 </div>
             </div>
@@ -270,8 +302,8 @@
     <div class="dashboard container">
         <div class="sidebar">
             <ul class="sidebar-nav">
-                <li><a href="complaint"><i class="fas fa-plus-circle"></i>New Complaint</a></li>
-                <li><a href="history "><i class="fas fa-list"></i>My Complaints</a></li>
+                <li><a href="s_complaint.html"><i class="fas fa-plus-circle"></i>New Complaint</a></li>
+                <li><a href="s_history.html"><i class="fas fa-list"></i>My Complaints</a></li>
             </ul>
         </div>
 
@@ -305,6 +337,9 @@
                             <th>Status</th>
                         </tr>
                     </thead>
+                    <tbody id="complaintTableBody">
+                        <!-- Complaint data will be inserted here -->
+                    </tbody>
                 </table>
             </div>
 
@@ -316,29 +351,39 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const newComplaintLink = document.querySelector('.sidebar-nav a[href="complaint"]');
-    const historyLink = document.querySelector('.sidebar-nav a[href="history "]'); 
-    if (newComplaintLink) {
-        newComplaintLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 's complaint.html';
-        });
-    }
-    
-    if (historyLink) {
-        historyLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 's history.html';
-        });
-    }
-    
-    const quickComplaintBtn = document.querySelector('.quick-complaint-btn .btn');
-    if (quickComplaintBtn) {
-        quickComplaintBtn.addEventListener('click', function() {
-            window.location.href = 's complaint.html';
-        });
-    }
-});
+        
+        // Update user info in the header
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userRole').textContent = user.role;
+        
+        // Set user initials
+        const nameParts = user.name.split(' ');
+        const initials = nameParts.length > 1 
+            ? (nameParts[0][0] + nameParts[1][0]).toUpperCase() 
+            : nameParts[0].substring(0, 2).toUpperCase();
+        document.getElementById('userInitials').textContent = initials;
+        
+        // Navigation links
+        const newComplaintLink = document.querySelector('.sidebar-nav a[href="s_complaint.html"]');
+        const historyLink = document.querySelector('.sidebar-nav a[href="s_history.html"]');
+        
+        // Quick complaint button
+        const quickComplaintBtn = document.querySelector('.quick-complaint-btn .btn');
+        if (quickComplaintBtn) {
+            quickComplaintBtn.addEventListener('click', function() {
+                window.location.href = 's_complaint.html';
+            });
+        }
+        
+        // Logout button
+        const logoutBtn = document.querySelector('.logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+        }
+    });
     </script>
 </body>
 </html>
