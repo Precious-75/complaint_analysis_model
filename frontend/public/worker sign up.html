@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrator Signup - BUCMS</title>
+    <title>Worker Signup - BUCMS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -76,7 +76,7 @@
         
         .auth-image {
             flex: 1;
-            background: linear-gradient(135deg, #343a40 0%, #6c757d 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%);
             padding: 40px;
             display: flex;
             flex-direction: column;
@@ -223,15 +223,15 @@
             <div class="auth-box">
                 <div class="auth-image">
                     <div class="auth-icon">
-                        <i class="fas fa-user-shield"></i>
+                        <i class="fas fa-user-tie"></i>
                     </div>
-                    <h2>Administrator Portal</h2>
-                    <p>Join our team to manage and resolve student complaints efficiently with our emotional intelligence system.</p>
+                    <h2>Worker Portal</h2>
+                    <p>Join our team to resolve and respond to student complaints efficiently.</p>
                 </div>
                 <div class="auth-forms">
-                    <h2 class="form-heading">Administrator Sign Up</h2>
+                    <h2 class="form-heading">Worker Sign Up</h2>
                     
-                    <form action="admin login.html" method="post">
+                    <form action="worker login.html" method="post">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="first-name">First Name</label>
@@ -258,6 +258,11 @@
                             <input type="text" id="position" name="position" class="form-control" required>
                         </div>
                         
+                        <div class="form-group">
+                            <label for="employee-id">Employee ID</label>
+                            <input type="text" id="employee-id" name="employee_id" class="form-control" required>
+                        </div>
+                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="password">Password</label>
@@ -274,7 +279,7 @@
                         </div>
                         
                         <div class="links">
-                            <a href="admin login.html" class="link">Already have an account? <strong>Login</strong></a>
+                            <a href="worker login.html" class="link">Already have an account? <strong>Login</strong></a>
                         </div>
                     </form>
                     
