@@ -65,7 +65,7 @@ def label_urgency(text):
         'immediate', 'urgent', 'emergency', 'dangerous', 'hazard', 'critical',
         'serious', 'severe', 'life-threatening', 'fatal', 'extreme', 'disaster',
         'unacceptable', 'horrific', 'worst', 'terrible', 'harmful', 'unsafe',
-        'threatening', 'illegal', 'breach', 'violation', 'lawsuit', 'legal action, dangerous'
+        'threatening', 'illegal', 'breach', 'violation', 'lawsuit', 'legal action', 'dangerous'
     ]
     
     # Keywords indicating low urgency
