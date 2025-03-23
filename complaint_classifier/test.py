@@ -20,11 +20,9 @@ nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
 
-# Step 2: Define text preprocessing function
+#   preprocessing 
 def simple_clean_text(text):
-    """
-    A simpler version of text cleaning that doesn't use NLTK tokenization
-    """
+    
     if not isinstance(text, str):
         return ""
     
@@ -35,16 +33,14 @@ def simple_clean_text(text):
     import re
     text = re.sub(r'[^a-zA-Z\s]', '', text)
     
-    # Simple word splitting
     words = text.split()
-    
-    # Remove stopwords if available
+
     try:
         from nltk.corpus import stopwords
         stop_words = set(stopwords.words('english'))
         words = [word for word in words if word not in stop_words]
     except:
-        # If stopwords fail, just keep all words
+       
         pass
     
     # Join words back into text
@@ -52,7 +48,7 @@ def simple_clean_text(text):
     
     return cleaned_text
 
-# Step 3: Create a function to label data based on keywords and patterns
+#: Creating a function to label data based on keywords and patterns
 def label_urgency(text):
     """
     Labels text as 'high', 'normal', or 'low' urgency based on keywords and patterns.
@@ -193,7 +189,6 @@ print(f"Accuracy: {accuracy_score(y_test, rf_y_pred):.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, rf_y_pred))
 
-# Create confusion matrix for Random Forest
 plt.figure(figsize=(10, 8))
 cm = confusion_matrix(y_test, rf_y_pred)
 sns.heatmap(cm, annot=True, fmt='d', cmap='Greens', 
@@ -223,7 +218,7 @@ if hasattr(rf_best_model['classifier'], 'feature_importances_'):
     feature_names = rf_best_model['tfidf'].get_feature_names_out()
     feature_importances = rf_best_model['classifier'].feature_importances_
     
-    # Get top 20 features
+  
     indices = np.argsort(feature_importances)[-20:]
     plt.figure(figsize=(12, 10))
     plt.title('Top 20 Feature Importances - Random Forest')
@@ -239,19 +234,18 @@ import joblib
 joblib.dump(rf_best_model if accuracy_score(y_test, rf_y_pred) > accuracy_score(y_test, nb_y_pred) else nb_best_model, 
             'complaint_urgency_classifier.joblib')
 
-# The Function to classify new complaints
+
 def predict_urgency(complaint_text, model):
     """
     Predicts the urgency level of a new complaint using the trained model.
     """
-    # Clean the text
+    
     cleaned_text =simple_clean_text(complaint_text)
     
-    # Make prediction
     prediction = model.predict([cleaned_text])[0]
     probabilities = model.predict_proba([cleaned_text])[0]
     
-    # Get confidence score for the prediction
+    
     confidence = max(probabilities)
     
     return {
@@ -262,7 +256,7 @@ def predict_urgency(complaint_text, model):
         }
     }
 
-# Example of the prediction function in the works
+# Example 
 best_model = rf_best_model if accuracy_score(y_test, rf_y_pred) > accuracy_score(y_test, nb_y_pred) else nb_best_model
 test_complaint = "The software is somewhat low and I've lost all my work!"
 prediction_result = predict_urgency(test_complaint, best_model)
