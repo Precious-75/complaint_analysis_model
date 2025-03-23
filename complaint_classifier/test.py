@@ -65,7 +65,7 @@ def label_urgency(text):
         'immediate', 'urgent', 'emergency', 'dangerous', 'hazard', 'critical',
         'serious', 'severe', 'life-threatening', 'fatal', 'extreme', 'disaster',
         'unacceptable', 'horrific', 'worst', 'terrible', 'harmful', 'unsafe',
-        'threatening', 'illegal', 'breach', 'violation', 'lawsuit', 'legal action', 'dangerous'
+        'threatening', 'illegal', 'breach', 'violation', 'lawsuit', 'legal action', 'crashed'
     ]
     
     # Keywords indicating low urgency
@@ -94,36 +94,34 @@ def label_urgency(text):
         return 'normal'
     
 df = pd.read_csv('C:/xampp/final year/complaint_classifier/complaints.csv', encoding='latin1')
-# Convert all values in 'Complaint' column to strings
 df['Complaint'] = df['Complaint'].astype(str)
 
-# Step 5: Preprocess the data
+# Preprocess the data
 df['clean_text'] = df['Complaint'].apply(simple_clean_text)
 df['urgency'] = df['Complaint'].apply(label_urgency)
 
-# Step 7: Split data into training and testing sets
+#Splitting the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(
     df['clean_text'], 
     df['urgency'],
     test_size=0.2, 
     random_state=42,
-    stratify=df['urgency']  # Ensure balanced classes in train and test sets
+    stratify=df['urgency']  
 )
 
-# Step 8: Create feature extraction and model pipelines
-# 8.1: Naive Bayes pipeline
+
+# Naive Bayes pipeline
 nb_pipeline = Pipeline([
     ('tfidf', TfidfVectorizer(max_features=1020)),
     ('classifier', MultinomialNB())
 ])
 
-# 8.2: Random Forest pipeline
+# Random Forest pipeline
 rf_pipeline = Pipeline([
     ('tfidf', TfidfVectorizer(max_features=1020)),
     ('classifier', RandomForestClassifier(random_state=42))
 ])
 
-# Step 9: Hyperparameter tuning for Naive Bayes
 nb_param_grid = {
     'tfidf__ngram_range': [(1, 1), (1, 2)],
     'tfidf__max_df': [0.5, 0.75, 1.0],
@@ -139,12 +137,12 @@ nb_grid_search = GridSearchCV(
     n_jobs=-1
 )
 
-# Train Naive Bayes model with grid search
+# Training Naive Bayes model with grid search
 print("Training Naive Bayes model with hyperparameter tuning...")
 nb_grid_search.fit(X_train, y_train)
 nb_best_model = nb_grid_search.best_estimator_
 print(f"Best Naive Bayes parameters: {nb_grid_search.best_params_}")
-# Step 10: Hyperparameter tuning for Random Forest (missing in your code)
+
 rf_param_grid = {
     'tfidf__ngram_range': [(1, 1), (1, 2)],
     'tfidf__max_df': [0.75, 1.0],
@@ -167,8 +165,8 @@ rf_grid_search.fit(X_train, y_train)
 rf_best_model = rf_grid_search.best_estimator_
 print(f"Best Random Forest parameters: {rf_grid_search.best_params_}")
 
-# Step 11: Evaluate models on test set
-# 11.1: Evaluate Naive Bayes
+
+# Evaluate Naive Bayes
 nb_y_pred = nb_best_model.predict(X_test)
 print("\nNaive Bayes Model Evaluation:")
 print(f"Accuracy: {accuracy_score(y_test, nb_y_pred):.4f}")
@@ -188,7 +186,7 @@ plt.tight_layout()
 plt.savefig('nb_confusion_matrix.png')
 plt.close()
 
-# 11.2: Evaluate Random Forest
+# Evaluate Random Forest
 rf_y_pred = rf_best_model.predict(X_test)
 print("\nRandom Forest Model Evaluation:")
 print(f"Accuracy: {accuracy_score(y_test, rf_y_pred):.4f}")
@@ -208,7 +206,7 @@ plt.tight_layout()
 plt.savefig('rf_confusion_matrix.png')
 plt.close()
 
-# Step 12: Compare model performance
+# Compare model performance
 models = ['Naive Bayes', 'Random Forest']
 accuracies = [accuracy_score(y_test, nb_y_pred), accuracy_score(y_test, rf_y_pred)]
 
@@ -220,7 +218,7 @@ plt.ylabel('Accuracy')
 plt.savefig('model_comparison.png')
 plt.close()
 
-# Step 13: Feature importance analysis for Random Forest
+# Feature importance analysis for Random Forest
 if hasattr(rf_best_model['classifier'], 'feature_importances_'):
     feature_names = rf_best_model['tfidf'].get_feature_names_out()
     feature_importances = rf_best_model['classifier'].feature_importances_
@@ -236,12 +234,12 @@ if hasattr(rf_best_model['classifier'], 'feature_importances_'):
     plt.savefig('feature_importance.png')
     plt.close()
 
-# Step 14: Save the best model
+# Saving the best model
 import joblib
 joblib.dump(rf_best_model if accuracy_score(y_test, rf_y_pred) > accuracy_score(y_test, nb_y_pred) else nb_best_model, 
             'complaint_urgency_classifier.joblib')
 
-# Step 15: Function to classify new complaints
+# The Function to classify new complaints
 def predict_urgency(complaint_text, model):
     """
     Predicts the urgency level of a new complaint using the trained model.
@@ -264,9 +262,9 @@ def predict_urgency(complaint_text, model):
         }
     }
 
-# Example of how to use the prediction function
+# Example of the prediction function in the works
 best_model = rf_best_model if accuracy_score(y_test, rf_y_pred) > accuracy_score(y_test, nb_y_pred) else nb_best_model
-test_complaint = "The urgent software has crashed and I've lost all my work. This is dangerous!"
+test_complaint = "The software is somewhat low and I've lost all my work!"
 prediction_result = predict_urgency(test_complaint, best_model)
 print("\nExample Prediction:")
 print(f"Complaint: {test_complaint}")
