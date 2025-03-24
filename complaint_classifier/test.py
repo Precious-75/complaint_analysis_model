@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
+import os
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -89,7 +90,7 @@ def label_urgency(text):
     else:
         return 'normal'
     
-df = pd.read_csv('C:/xampp/final year/complaint_classifier/complaints.csv', encoding='latin1')
+df = pd.read_csv(r'C:/xampp/final year/complaint_classifier/Complaints.csv', encoding='latin1')
 df['Complaint'] = df['Complaint'].astype(str)
 
 # Preprocess the data
@@ -161,7 +162,6 @@ rf_grid_search.fit(X_train, y_train)
 rf_best_model = rf_grid_search.best_estimator_
 print(f"Best Random Forest parameters: {rf_grid_search.best_params_}")
 
-
 # Evaluate Naive Bayes
 nb_y_pred = nb_best_model.predict(X_test)
 print("\nNaive Bayes Model Evaluation:")
@@ -169,7 +169,7 @@ print(f"Accuracy: {accuracy_score(y_test, nb_y_pred):.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, nb_y_pred))
 
-# Create confusion matrix for Naive Bayes
+#  matrix for Naive Bayes
 plt.figure(figsize=(10, 8))
 cm = confusion_matrix(y_test, nb_y_pred)
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
@@ -258,12 +258,21 @@ def predict_urgency(complaint_text, model):
 
 # Example 
 best_model = rf_best_model if accuracy_score(y_test, rf_y_pred) > accuracy_score(y_test, nb_y_pred) else nb_best_model
-test_complaint = "The software is somewhat low and I've lost all my work!"
+test_complaint = "The software is giving minor issues"
 prediction_result = predict_urgency(test_complaint, best_model)
 print("\nExample Prediction:")
 print(f"Complaint: {test_complaint}")
 print(f"Predicted Urgency: {prediction_result['urgency']}")
 print(f"Confidence: {prediction_result['confidence']:.4f}")
 print("Class Probabilities:", prediction_result['probabilities'])
+
+file_size = os.path.getsize('C:/xampp/final year/complaint_classifier/Complaints.csv')
+print(f"CSV file size: {file_size} bytes")
+print(f"DataFrame dimensions: {df.shape}")
+
+#checking if the stopwords have been cleared
+cleaned_text = simple_clean_text(test_complaint)
+print(f"\nOriginal: {test_complaint}")
+print(f"After cleaning: {cleaned_text}")
 
 print("\nModel training and evaluation complete!")
