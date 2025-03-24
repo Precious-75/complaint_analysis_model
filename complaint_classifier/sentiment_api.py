@@ -5,10 +5,9 @@ import joblib
 app = Flask(__name__)
 CORS(app)
 
-# Load the model
+# loading the model
 model = joblib.load('complaint_urgency_classifier.joblib')
 
-# Your text cleaning function from your original code
 def simple_clean_text(text):
     if not isinstance(text, str):
         return ""
@@ -29,7 +28,7 @@ def predict():
     data = request.json
     text = data.get('text', '')
     
-    # Clean and predict
+    # Cleaning the model
     cleaned_text = simple_clean_text(text)
     prediction = model.predict([cleaned_text])[0]
     probabilities = model.predict_proba([cleaned_text])[0]

@@ -400,8 +400,7 @@
             roleButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             
-            // New addition: Redirect based on role
-           // New addition: Redirect based on role
+
            const role = this.getAttribute('data-role');
             if (role === 'student') {
                 window.location.href = 'student login.html';
