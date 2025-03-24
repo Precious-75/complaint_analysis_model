@@ -5,6 +5,7 @@ import joblib
 app = Flask(__name__)
 CORS(app)
 
+
 # loading the model
 model = joblib.load('complaint_urgency_classifier.joblib')
 
@@ -22,6 +23,11 @@ def simple_clean_text(text):
     except:
         pass
     return ' '.join(words)
+
+@app.route('/')
+def home():
+    return "Welcome Group 62."
+
 
 @app.route('/predict', methods=['POST'])
 def predict():

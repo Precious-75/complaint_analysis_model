@@ -258,7 +258,7 @@ def predict_urgency(complaint_text, model):
 
 # Example 
 best_model = rf_best_model if accuracy_score(y_test, rf_y_pred) > accuracy_score(y_test, nb_y_pred) else nb_best_model
-test_complaint = "The software is giving minor issues"
+test_complaint = ",My courses are not accurate"
 prediction_result = predict_urgency(test_complaint, best_model)
 print("\nExample Prediction:")
 print(f"Complaint: {test_complaint}")
