@@ -14,7 +14,6 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 from sklearn.pipeline import Pipeline
 import matplotlib.pyplot as plt
 import seaborn as sns
-import nltk
 
 
 nltk.download('stopwords')
@@ -61,7 +60,7 @@ def label_urgency(text):
     high_urgency = [
         'immediate', 'urgent', 'emergency', 'dangerous', 'hazard', 'critical',
         'serious', 'severe', 'life-threatening', 'fatal', 'extreme', 'disaster',
-        'unacceptable', 'horrific', 'worst', 'terrible', 'harmful', 'unsafe',
+        'unacceptable', 'horrific', 'worst', 'terrible', 'harmful', 'unsafe', 'broken',
         'threatening', 'illegal', 'breach', 'violation', 'lawsuit', 'legal action', 'crashed'
     ]
     
