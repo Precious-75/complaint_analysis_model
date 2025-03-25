@@ -372,6 +372,48 @@
                 alert('Complaint submitted successfully!');
                 window.location.href = 's dashboard.html';
             });
+            // complaint-submission.js
+class ComplaintManager {
+    constructor() {
+        this.complaints = JSON.parse(localStorage.getItem('userComplaints')) || [];
+    }
+
+    addComplaint(complaint) {
+        // Generate a unique complaint ID
+        complaint.id = `COMP-${Date.now()}`;
+        complaint.date = new Date().toLocaleDateString();
+        complaint.status = 'Pending';
+
+        // Get current user
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        complaint.userId = user.id;
+
+        // Add to complaints array
+        this.complaints.push(complaint);
+
+        // Save to localStorage
+        this.saveComplaints();
+
+        return complaint;
+    }
+
+    saveComplaints() {
+        localStorage.setItem('userComplaints', JSON.stringify(this.complaints));
+    }
+
+    getUserComplaints(userId) {
+        return this.complaints.filter(complaint => complaint.userId === userId);
+    }
+
+    getComplaintStats(userId) {
+        const userComplaints = this.getUserComplaints(userId);
+        return {
+            total: userComplaints.length,
+            pending: userComplaints.filter(c => c.status === 'Pending').length,
+            resolved: userComplaints.filter(c => c.status === 'Resolved').length
+        };
+    }
+}
         });
     </script>
 </body>

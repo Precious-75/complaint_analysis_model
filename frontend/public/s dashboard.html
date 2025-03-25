@@ -312,15 +312,15 @@
                 <h2>Overview</h2>
                 <div class="stats">
                     <div class="stat-box">
-                        <h3>0</h3>
+                        <h3>3</h3>
                         <p>Total Complaints</p>
                     </div>
                     <div class="stat-box">
-                        <h3>0</h3>
+                        <h3>1</h3>
                         <p>Pending</p>
                     </div>
                     <div class="stat-box">
-                        <h3>0</h3>
+                        <h3>1</h3>
                         <p>Resolved</p>
                     </div>
                 </div>
@@ -338,7 +338,28 @@
                         </tr>
                     </thead>
                     <tbody id="complaintTableBody">
-                        <!-- Complaint data will be inserted here -->
+                        <!-- Replace the existing <tbody id="complaintTableBody"> with this -->
+<tbody id="complaintTableBody">
+    <tr>
+        <td>COMP-001</td>
+        <td>2024-03-15</td>
+        <td>Facilities</td>
+        <td><span class="status pending">Pending</span></td>
+    </tr>
+    <tr>
+        <td>COMP-002</td>
+        <td>2024-03-10</td>
+        <td>IT Services</td>
+        <td><span class="status in-progress">In Progress</span></td>
+    </tr>
+    <tr>
+        <td>COMP-003</td>
+        <td>2024-02-25</td>
+        <td>Academic</td>
+        <td><span class="status resolved">Resolved</span></td>
+    </tr>
+    
+</tbody>
                     </tbody>
                 </table>
             </div>
@@ -376,7 +397,7 @@
         if (logoutBtn) {
             logoutBtn.addEventListener('click', function() {
                 localStorage.removeItem('currentUser');
-                window.location.href = 'index.html';
+                window.location.href = 'home.html';
             });
         }
     });
