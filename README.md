@@ -1,2 +1,1 @@
-[![Precious-75/complaint_analysis_model - GitHub](https://github-readme-stats.vercel.app/api/pin/?username=precious-75&repo=complaint_analysis_model&theme=default&border_color=2e4053)](https://github.com/precious-75/complaint_analysis_model)
-
+[![Repo Card](https://github-readme-stats.vercel.app/api/pin/?username=precious-75&repo=complaint_analysis_model&theme=radical&border_color=ff69b4&cache_bust=123)](https://github.com/precious-75/complaint_analysis_model)
